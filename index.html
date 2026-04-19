@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap');
+
+    :root {
+        --pink-bg: #ffafbd;
+        --pink-dark: #ff4b2b;
+        --envelope-main: #f03e3e;
+        --envelope-light: #ff6b6b;
+    }
+
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 150vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, var(--pink-bg) 0%, #ffc3a0 100%);
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* Background Hati Melayang */
+    .hearts-container {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .wrapper {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .instruction {
+        color: white;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        background: rgba(0,0,0,0.2);
+        padding: 8px 15px;
+        border-radius: 20px;
+        animation: bounce 1.5s infinite;
+    }
+
+    /* Badan Amplop */
+    .envelope-container {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        background-color: var(--envelope-main);
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        cursor: pointer;
+    }
+
+    /* Tutup Amplop */
+    .envelope-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        z-index: 5;
+        border-top: 110px solid var(--envelope-light);
+        border-left: 150px solid transparent;
+        border-right: 150px solid transparent;
+        transform-origin: top;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Kertas Surat */
+    .letter {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        height: 180px;
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        transition: all 0.8s ease;
+        z-index: 2;
+        text-align: center;
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+
+    .letter::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Animasi Saat Amplop Dibuka */
+    .open.envelope-container::before {
+        transform: rotateX(180deg);
+        z-index: 0;
+    }
+
+    .open .letter {
+        /* Kertas naik jauh ke atas agar keluar dari amplop */
+        transform: translate(-50%, -180px); 
+        height: 515px; /* Ukuran surat memanjang */
+        z-index: 6;
+        padding-bottom: 40px; /* Ruang ekstra di bawah teks */
+    }
+
+    /* Elemen di dalam Surat */
+    .photo-frame {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 10px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid var(--pink-dark);
+        flex-shrink: 0;
+    }
+
+    .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    h2 {
+        font-family: 'Dancing Script', cursive;
+        color: var(--pink-dark);
+        margin: 5px 0;
+        font-size: 1.6rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+        color: #444;
+        line-height: 1.6;
+        margin: 8px 0;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    /* Penyesuaian layar sangat kecil */
+    @media (max-height: 600px) {
+        .open .letter {
+            height: 320px;
+            transform: translate(-50%, -120px);
+        }
+    }
+</style>
+</head>
+<body>
+
+    <audio id="hbdAudio" loop>
+        <source src="D4vd - Here With Me.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="hearts-container" id="hearts"></div>
+
+    <div class="wrapper">
+        <div class="instruction" id="hint">Klik amplopnya yaa! ✨</div>
+        
+        <div class="envelope-container" id="envelope" onclick="openMe()">
+            <div class="letter">
+                <div class="photo-frame">
+                    <img src="foto-pagi1.jpeg" alt="Foto">
+                </div>
+                <h2>Happy Birthday Semestaku!!</h2>
+                <p>Selamat ulang tahun yaa sayang! Semoga di umur sekarang ini kamu selalu diberikan kebahagiaan, tercapai semua keinginan kamu, jadi manusia yang lebih baik dan bijak, dan yang terpenting adalah kamu sehat selalu dan panjang umur serta banyak rezeki. Aku beruntung banget punya kamu semoga kamu selalu sayang sama aku yaa (I LOVE U❤️). </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openMe() {
+            const env = document.getElementById('envelope');
+            const audio = document.getElementById('hbdAudio');
+            const hint = document.getElementById('hint');
+
+            if (!env.classList.contains('open')) {
+                env.classList.add('open');
+                hint.style.display = 'none';
+                
+                // Play Audio
+                audio.play().catch(e => console.log("Play blocked"));
+
+                // Selebrasi Meriah (Confetti)
+                const end = Date.now() + (4 * 1000);
+                const colors = ['#ff4b2b', '#ffafbd', '#ffffff', '#ff6b6b'];
+
+                (function frame() {
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: colors
+                    });
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: colors
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+            }
+        }
+
+        // Hati melayang di background
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '🌸'; // Bisa ganti ❤️ atau ✨
+            heart.style.position = 'absolute';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.bottom = '-20px';
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.opacity = Math.random();
+            heart.style.transition = `transform ${Math.random() * 3 + 3}s linear`;
+            
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+            }, 100);
+
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
